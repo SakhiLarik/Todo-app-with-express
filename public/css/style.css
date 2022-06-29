@@ -1,0 +1,28 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Bookman Old Style !important;
+}
+h1.header {
+  overflow: hidden;
+  color: #fff;
+  font-size: 50px;
+  padding: 25px;
+  box-shadow: 0 0 15px 5px #ccc;
+  background-color: rgb(0, 204, 211);
+  text-align: center;
+}
+.todos-list {
+  display: flex;
+  width: auto;
+  margin: -16px;
+  margin-left: 20px;
+}
+#parag {
+  border: 1px solid rgb(0, 204, 211);
+  border-radius: 5px;
+  color: rgb(0, 204, 211);
+  font-size: 18px;
+  padding: 10px;
+}
