@@ -1,0 +1,120 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../../public/css/style.css" />
+    <link rel="stylesheet" href="../../public/js/jquery-ui.css" />
+    <link rel="stylesheet" href="../../public/css/all.css" />
+    <link rel="stylesheet" href="../../public/css/all.min.css" />
+    <link rel="stylesheet" href="../../public/css/bootstrap.css" />
+    <link rel="stylesheet" href="../../public/css/bootstrap.min.css" />
+    <script src="../../public/js/all.js"></script>
+    <script src="../../public/js/all.min.js"></script>
+    <script src="../../public/js/jquery.js"></script>
+    <script src="../../public/js/bootstrap.js"></script>
+    <script src="../../public/js/jquery.min.js"></script>
+    <style></style>
+  </head>
+  <body>
+    <h1 class="header">Express To Do App</h1>
+    <br /><br />
+    <div class="container">
+      <div class="row">
+        <div class="add_to_do col-md-6">
+          <h1 class="text-secondary">Add To Do...</h1>
+          <br />
+          <form
+            class="form"
+            action="/addToDo"
+            method="post"
+            enctype="application/x-www-form-urlencoded"
+          >
+            <div class="form-group">
+              <textarea
+                rows="3"
+                type="text"
+                class="form-control description_set"
+                placeholder="Description..."
+                name="description"
+              ></textarea>
+            </div>
+            <br />
+            <div class="form-group">
+              <button
+                type="submit"
+                name="submit_todo"
+                class="btn btn-info text-white"
+              >
+                Add to do
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="set_to_do col-md-6">
+          <h1 class="text-secondary">Your To Do...</h1>
+          <br />
+          <div class="todos-container"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function setTodo(id, description) {
+        var doc = `
+            <form class="form" action="/removeToDo" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="form-group">
+              <input type="hidden" value='${id}' />
+            </div>
+            <br />
+            <div class="todos-list">
+                <p class="content parag" id="parag">
+                  ${description}
+                  <button type='button' onclick='delete_ajax(${id});' class='btn btn-danger text-white'>Delete</button>
+                </p>
+            </div>
+          </form>`;
+        return doc;
+      }
+      function viewTodos() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "./todos", true);
+        xhr.onload = function () {
+          if (this.status == 200) {
+            var data = this.responseText;
+            data = JSON.parse(data);
+            data.forEach((element) => {
+              $(".todos-container").append(
+                setTodo(element.id, element.description)
+              );
+            });
+          } else {
+            console.log("Error : " + this.status);
+          }
+        };
+        xhr.send();
+      }
+
+      function delete_ajax(delete_this) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("delete", `/delete/todo/${delete_this}`, true);
+        xhr.onload = function () {
+          if (this.status == 200) {
+            var data = this.responseText;
+            data = JSON.parse(data);
+            data.forEach((element) => {
+              $(".todos-container").append(
+                setTodo(element.id, element.description)
+              );
+            });
+          } else {
+            console.log("Error : " + this.status);
+          }
+        };
+        xhr.send();
+        window.location = window.location;
+      }
+      viewTodos();
+    </script>
+  </body>
+</html>
